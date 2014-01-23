@@ -1,0 +1,321 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+  
+import os, time
+
+class Recorredor:
+    def __init__(self, lista):
+        self.__lista=lista
+        self.__actual=0
+        
+
+    def comenzar(self):
+        self.__actual=0
+
+    def elemento(self):
+        return self.__lista[self.__actual]
+    
+    def proximo(self):
+        self.__actual+=1
+    
+    def fin(self):
+        return (self.__actual==len(self.__lista))
+    
+    def agregar(self, elem):
+        self.__lista.agregar(elem, self.__actual)
+    
+    def eliminar(self):
+        self.__lista.eliminar(self.elemento(), self.__actual);
+
+class Vertice:
+	def __init__(self, nombre, pos, habitantes, poe):
+		self.__listaDeVertices=[]
+		self.__Nombre=nombre
+		self.__posicion=pos
+		self.__habitantes=habitantes
+		self.__poe=poe
+		self.__adyacentes=[]
+	
+	def getListaDeAdyacentes(self):
+		return self.__adyacentes
+		
+	def setListaDeAdyacentes(self,adys):
+		self.__adyacentes=adys
+	
+	def getPosicion(self):
+		return self.__posicion
+		
+	def setPosicion(self):
+		self.__posicion=[]
+		
+	def getNombre(self):
+		return str(self.__Nombre)
+		
+	def setNombre(self):
+		self.__nombre=[]
+	
+	def getPoe(self):
+		return self.__poe
+	
+	def setPoe(self):
+		self.__poe=poe
+
+class Arista:
+	def __init__(self, origen, destino, peso):
+		self.__origen=origen
+		self.__destino=destino
+		self.__peso=peso
+	
+	def getdestino(self):
+		return self.__destino
+		
+	def getPeso(self):
+		return self.__peso
+		
+	def setdestino(self):
+		self.__destino=[]
+
+	def setPeso(self):
+		self.__peso=[]
+
+class Grafo:
+	def __init__(self):
+		self.__listaDeVertices = []
+	
+	def agregar_vertice (self, grafo, vertice):
+		self.__listaDeVertices.append(vertice)
+		
+	def borrar_vertice (self, grafo, vertice):
+		for ver in self.__vertices:
+			self.desConectar(vertice)
+		del self.__vertices[vertice.getPosicion()]
+
+	def conectar(self, origen, peso, destino):
+		origen.getListaDeAdyacentes().append(Arista(origen, destino,peso))
+	
+	def desConectar(self, origen, destino):
+		adyacentes = origen.getListaDeAdyacentes()
+		indiceActual=0
+		posAborrar=-1
+		for ady in adyacentes:
+			if ady.getDestino() == destino:
+				posAborrar =indiceActual
+			indiceActual+=1
+		if not posAborrar==-1:
+			del adyacentes[posAborrar]
+		
+	def getListaDeVertices(self):
+		return self.__listaDeVertices
+		
+	def setListaDeVertices(self, peso, destino):
+		self.__listaDeVertices=[]
+		origen.getListaDeVertices().append(Arista(peso, destino))
+
+class Recorredores:
+	def __init__(self):
+		self.todos_caminos=[]
+		self.todos_5_dias=[]
+
+	def __dfs(self, origen, destino, visitados, camino_actual, contador_peso): #1 x1 ...op1 mejor peso
+		if origen == destino:
+			listapeso=[]
+			for i in range (origen):
+				listaPeso=destino.getPeso()
+				self.mejor_contador = listaPeso[0]
+				for valor in listaPeso:
+					if valor > self.mejor_contador:
+						self.mejor_contador = valor
+			return self.mejor_contador 
+			print listaPeso
+			raw_input()
+			print self.mejor_contador
+			print ":P"
+			if contador_peso <= self.mejor_contador:
+				self.contador_mejor_camino = contador_peso
+				self.mejor_camino = camino_actual [:] #self.todos_caminos.append(camino_actual [:])
+		else:
+			print "W"
+			adyacentes = origen.getListaDeAdyacentes()
+			for adyacente in adyacentes:
+				Vertice_adyacente = adyacente.getdestino()
+				if not visitados[Vertice_adyacente.getPosicion()]:
+					self.mejor_contador >= adyacente.getPeso()
+					camino_actual.append (adyacente.getdestino())
+					visitados[Vertice_adyacente.getPosicion()] = True
+				
+				contador_peso -= 1
+				camino_actual.pop()
+				visitados[Vertice_adyacente.getPosicion()] = False
+				self.__dfs(Vertice_adyacente, destino, visitados, camino_actual, contador_peso)
+
+	def dfs(self, origen, destino):
+		contador_mejor_camino_actual=[]
+		self.mejor_contador=[]
+		contador_peso = 0
+		self.mejor_camino = []
+		camino_actual = []
+		visitados = []
+		for v in grafo.getListaDeVertices():
+			visitados.append(False)
+		self.__dfs(origen, destino, visitados, camino_actual, contador_peso)
+		global sali1
+		sali1= self.todos_caminos
+		
+	def __bfs(self, origen, visitado): #BFS(Breath First Search) todas ... op2
+		cola=[]
+		cola.append(origen)
+		for i in range (5):
+			while not cola==[]:
+				vertice = cola[0]
+				del cola[0]
+				if not visitado[vertice.getPosicion()]:
+					self.todos_5_dias.append(vertice.getNombre())
+					visitado[vertice.getPosicion()]=True
+					recorredor =Recorredor(vertice.getListaDeAdyacentes())
+					recorredor.comenzar()
+					while not recorredor.fin():
+						ady = recorredor.elemento().getdestino()
+						if not visitado[ady.getPosicion()]:
+							cola.append(ady)
+						recorredor.proximo()
+		global sali2
+		sali2= self.todos_5_dias
+					
+	def bfs(self, origen):
+		visitado = []
+		for i in (grafo.getListaDeVertices()):
+			visitado.append(False)
+		self.__bfs(origen, visitado)
+
+def imp(): #importo txt
+	#~ print "imp"
+	global ciudades
+	global habitantes
+	global poe
+	global pftes
+	abripftes=open("pftes.txt","r")
+	abriciudades=open("ciudades.txt","r")
+	todo=[]
+	habitantes=[]
+	pftes=[]
+	poe=[]
+	ciudades=[]
+	otro=[]
+	todo.append([abriciudades.readlines()])
+	for dato in (todo[0][0]):
+		ciudades.append(dato.split(",")[0])
+		habitantes.append(dato.split(",")[1])
+		poe.append(dato.split(",")[3][:-1])
+	todo1=[]
+	todo1.append([abripftes.readlines()])
+	for dato1 in (todo1[0][0]):
+		pftes.append(dato1[:-1].split(","))
+
+def llenoGrafo(): #crear grafo
+	global grafo
+	grafo=Grafo()
+	cont=0
+	for ciu in ciudades:
+		grafo.agregar_vertice(grafo,Vertice(ciudades[cont],cont,habitantes[cont],poe[cont]))
+		cont=cont+1
+	for i in range(len(ciudades)):
+		for j in range(len(ciudades)):
+			grafo.conectar(grafo.getListaDeVertices()[i],int(pftes[i][j]),grafo.getListaDeVertices()[j])
+
+def recorredor1():
+	a=Recorredores()
+	global listatotal
+	listatotal1=[]
+	for vertice in grafo.getListaDeVertices():
+		if vertice.getPoe():
+			a.dfs(vertice, vertice.getListaDeAdyacentes())
+			lista= []
+			lista= sali1
+			listatotal1.append(lista)
+
+def recorredor2():
+	global listatotal
+	b=Recorredores()
+	listatotal=[]
+	for i in grafo.getListaDeVertices():
+		if i.getPoe()=="True":
+			b.bfs(i)
+			lista= []
+			lista= sali2
+			listatotal.append(lista)
+			lista= []
+
+def limpiarPantalla():
+	if os.name == "posix":
+		orden = "clear"
+	elif os.name == "nt":
+		orden = "cls"
+	os.system(orden)
+
+def finalizar():
+	imprimir("\n\n\t\t Finalizando el programa . . .")
+	exit()
+
+def imprimir(cadena):
+	print cadena
+	time.sleep(1.5)
+
+def opcion1(): #los cargadores
+	imp()
+	llenoGrafo()
+	recorredor1()
+	op1 = open("1.txt","w")
+	op1.write("-"*20 + Ciudad.getNombre()+ "-"*20 + "\n")
+	op1.write(str(Arista.getVerticeDestino) + "\n")
+	op1.close()
+
+def opcion2():
+	imp()
+	llenoGrafo()
+	recorredor2()
+	op2 = open("2.txt","w")
+	contador=0
+	for lista in listatotal:
+		op2.write("-"*20 + str(listatotal[contador][0])+ "-"*20 + "\n"+str(listatotal[contador][1:6]) + "\n")
+		contador+=1
+	op2.write(str(listatotal))
+	op2.close()
+
+def menuInicio():
+	titulo = """
+				 Bienvenido
+================================================
+											
+	  1) Todos los caminos candidatos (peso)
+	  sale por 1.txt
+		
+	  2) Escenario en 5 dias
+	  sale x 2.txt                           """
+	  
+		
+	print "\n" + " "*60 + "S = SALIR \n" + titulo
+
+def inicio():
+	while 1:
+		limpiarPantalla()
+		menuInicio()
+		opcion = raw_input("\n\n\t   opcion: ")
+		
+		if opcion.upper() == "S":
+			finalizar()
+		
+		elif opcion == "1": #Todos los caminos candidatos: Un camino candidato es aquel que parte de un POE 
+							#(ciudad limítrofe o con aeropuerto) y esta compuesto solamente por los adyacentes
+							#con mayor PFTE.sale x 1.txt
+			return opcion1()
+			print type (opcion1)
+			
+		elif opcion == "2": # periodo de ventana de cinco días. La enfermedad se inicia en un POE y luego 
+							#infectará a todas las ciudades adyacentes el primer día, a las adyacentes de las 
+							#adyacentes del POE en el segundo día y así sucesivamente hasta alcanzar el 
+							#periodo de ventana. sale x 2.txt
+			return opcion2()
+		else:
+			imprimir( "\n\n\t\t Ingrese una opcion valida . . .")
+	
+inicio()
